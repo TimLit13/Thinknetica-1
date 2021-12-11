@@ -16,15 +16,15 @@ class Station
 
   # Станция отправляет поезд
   def train_departure(number)
-    @trains_on_station.delete_if { |train| train.number == number }
+    @trains_on_station.delete(number)
   end
 
-  # Вывод на экран всех поездов на станции
-  def display_trains
-    @trains_on_station.each_with_index do |train, i|
-      puts "#{i+1}. Поезд #{train.number}"
-    end
-  end
+  # # Вывод на экран всех поездов на станции
+  # def display_trains
+  #   @trains_on_station.each_with_index do |train, i|
+  #     puts "#{i+1}. Поезд #{train.number}"
+  #   end
+  # end
 
   # Возвращает список поездов на станции по заданному типу
   def trains_by_type(type)
