@@ -37,43 +37,23 @@ class Train
     @current_station = @route.stations.first
   end
 
-  # Переместить на следующую станцию
+  # Переместить на следующую станцию, если она не конечная
   def move_next_station
-    if @current_station != @route.stations.last
-      @current_station = find_next_station
+    @current_station = next_station if next_station
   end
 
-  # Переместить на предыдущую станцию
+  # Переместить на предыдущую станцию, если она не первая в маршруте
   def move_previous_station
-    if @current_station != @route.stations.first
-      @current_station_index -= 1
-      @current_station = find_previous_station
-    end
+    @current_station = previous_station if previous_station
   end
 
-  # Возвращает предыдущую станцию. Если поезд на 1 станции, то возвращает ее
+  # Возвращает предыдущую станцию. Если поезд на 1 станции, то возвращает nil
   def previous_station
-    if @current_station != @route.stations.first
-      find_previous_station
-    end
+    @route.stations[@route.stations.index(@current_station) - 1] if @current_station != @route.stations.first
   end
 
-  # Возвращает слудующую станцию. Если поезд на последней станции, то возвращает ее
+  # Возвращает слудующую станцию. Если поезд на последней станции, то возвращает nil
   def next_station
-    if current_station != @route.stations.last
-      find_next_station
-    end
-  end
-
-  private
-
-  # поиск предыдущей станции для использования только внутри объекта класса
-  def find_previous_station
-    @route.stations[@route.stations.index(@current_station) - 1]
-  end
-
-  # поиск следующей станции для использования только внутри объекта класса
-  def find_next_station
-    @route.stations[@route.stations.index(@current_station) + 1]
+    @route.stations[@route.stations.index(@current_station) + 1] if current_station != @route.stations.last
   end
 end
