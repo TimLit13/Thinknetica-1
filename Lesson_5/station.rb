@@ -3,11 +3,17 @@ class Station
 
   # возвращает список поездов на станции, Наименование станции
   attr_reader :trains_on_station, :name
+  @station_instances = 0
+
+  class << self
+    attr_accessor :station_instances
+  end
 
   # инициализирует станцию с именем, которое указывается при ее создании
   def initialize(name)
     @trains_on_station = []
     @name = name
+    self.class.station_instances += 1
   end
 
   # Станция принимает поезд
