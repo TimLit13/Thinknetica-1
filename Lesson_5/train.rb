@@ -1,5 +1,5 @@
 class Train
-
+  include Company
   # все методы, кроме private так или иначе используются извне класса, поэтому public
   # возвращаем скорость, количество вагонов 
   attr_reader :speed, :carriages, :current_station, :type, :name
