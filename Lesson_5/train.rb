@@ -4,11 +4,18 @@ class Train
   # возвращаем скорость, количество вагонов 
   attr_reader :speed, :carriages, :current_station, :type, :name
 
+  @@trains = []
+
+  def self.find(number)
+    @@trains.find { |train| train.number == number}
+  end
+
   # Инициализируем объект с номером, типом и количеством вагонов
   def initialize(number)
     @name = number
     @carriages=Array.new
     @speed = 0
+    @@trains.push(self)
   end
 
   # Набрать заданную скорость
