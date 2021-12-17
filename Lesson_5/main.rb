@@ -1,4 +1,5 @@
 require_relative './company.rb'
+require_relative './instance_counter.rb'
 require_relative './station.rb'
 require_relative './route.rb'
 require_relative './train.rb'
@@ -10,7 +11,7 @@ require_relative './passenger_carriage.rb'
 require_relative './seed.rb'
 
 class AppController
-  # include Seed
+  include Seed
 
   def initialize
     @stations = Array.new

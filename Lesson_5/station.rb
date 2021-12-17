@@ -1,4 +1,5 @@
 class Station
+  include InstanceCounter
   # Все методы public - так как все вызываются извне
 
   # возвращает список поездов на станции, Наименование станции
@@ -14,6 +15,7 @@ class Station
     @trains_on_station = []
     @name = name
     self.class.station_instances += 1
+    register_instance
   end
 
   # Станция принимает поезд

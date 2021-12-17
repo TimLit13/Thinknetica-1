@@ -1,4 +1,5 @@
 class Route
+  include InstanceCounter
   # Все методы public - так как все вызываются извне
   
   attr_reader :stations
@@ -6,6 +7,7 @@ class Route
   # Создаем маршрут с первой станцией и конечной станцией
   def initialize(first_station, last_station)
     @stations=[first_station, last_station]
+    register_instance
   end
 
   # # Показать все станции на маршруте

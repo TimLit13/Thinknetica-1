@@ -1,5 +1,6 @@
 class Train
   include Company
+  include InstanceCounter
   # все методы, кроме private так или иначе используются извне класса, поэтому public
   # возвращаем скорость, количество вагонов 
   attr_reader :speed, :carriages, :current_station, :type, :name
@@ -7,7 +8,7 @@ class Train
   @@trains = []
 
   def self.find(number)
-    @@trains.find { |train| train.number == number}
+    @@trains.find { |train| train.name == number}
   end
 
   # Инициализируем объект с номером, типом и количеством вагонов
@@ -16,6 +17,7 @@ class Train
     @carriages=Array.new
     @speed = 0
     @@trains.push(self)
+    register_instance
   end
 
   # Набрать заданную скорость
