@@ -1,5 +1,6 @@
 class Station
   include InstanceCounter
+  include CheckValidation
   # Все методы public - так как все вызываются извне
 
   # возвращает список поездов на станции, Наименование станции
@@ -14,6 +15,7 @@ class Station
   def initialize(name)
     @trains_on_station = []
     @name = name
+    validate!
     self.class.station_instances += 1
     register_instance
   end
@@ -32,11 +34,18 @@ class Station
   # def display_trains
   #   @trains_on_station.each_with_index do |train, i|
   #     puts "#{i+1}. Поезд #{train.number}"
-  #   end
+  #   endgit push --set-upstream origin Tasks_for_Lesson_6_(validation)
   # end
 
   # Возвращает список поездов на станции по заданному типу
   def trains_by_type(type)
     @trains_on_station.select { |train| train.type == type}
   end
+
+  private
+
+  def validate!
+    raise RuntimeError, "В названии станции должно быть не менее трех символов" if @name.length < 3
+  end
+
 end

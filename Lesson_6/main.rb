@@ -1,5 +1,6 @@
 require_relative './company.rb'
 require_relative './instance_counter.rb'
+require_relative './check_validation.rb'
 require_relative './station.rb'
 require_relative './route.rb'
 require_relative './train.rb'
@@ -67,19 +68,34 @@ class AppController
 
 
   def create_train
-    puts 'Введите тип поезда:'
-      user_train_type = gets.strip
-    puts 'Введите номер поезда:'
-      user_train_name = gets.strip.to_i
-  
-    if user_train_type == 'Пассажирский' && user_train_name!=''
-      @trains.push(PassengerTrain.new(user_train_name))
-    elsif user_train_type == 'Грузовой' && user_train_name!=''
-      @trains.push(CargoTrain.new(user_train_name))
-    else 
-      user_choice_mistake(user_train_type)
-      puts "Или не введен номер поезда"
+    attempts = 0
+    begin
+      puts 'Введите тип поезда:'
+        user_train_type = gets.strip
+      puts 'Введите номер поезда:'
+        user_train_name = gets.strip
+      puts 'Укажите количество вагонов'
+        user_carriages_number = gets.strip.to_i
+    
+      if user_train_type == 'Пассажирский'
+        @trains.push(PassengerTrain.new(user_train_name, user_carriages_number))
+      elsif user_train_type == 'Грузовой'
+        @trains.push(CargoTrain.new(user_train_name, user_carriages_number))
+      else 
+        raise RuntimeError, "Введен неправильный тип поезда"
+      end
+    rescue RuntimeError => exc
+      attempts += 1
+      puts "#{exc.message}"
+      if attempts < 3
+        puts "Не удалось создать поезд. Попробуйте снова"
+        puts "Осталось попыток: #{3-attempts}"
+        retry
+      else
+        puts "Не удалось создать поезд.\nВыход в меню." 
+      end
     end
+      puts "#{user_train_type} поезд ##{user_train_name} с количеством вагонов: #{user_carriages_number} успешно создан" if attempts < 3
   end
 
 

@@ -18,8 +18,8 @@ module Seed
     @routes.push(route_2)
     route_2.add_station(station_2)
 
-    train_1 = PassengerTrain.new(821)
-    train_2 = CargoTrain.new(111)
+    train_1 = PassengerTrain.new("111-11", 11)
+    train_2 = CargoTrain.new("222-22", 50)
     @trains.push(train_1)
     @trains.push(train_2)
 

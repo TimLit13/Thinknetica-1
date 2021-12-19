@@ -1,6 +1,10 @@
 class Train
   include Company
   include InstanceCounter
+  include CheckValidation
+
+  TRAIN_NUMBER_PATTERN = /^[a-zA-Z||а-яА-Я||\d]{3}-?[a-zA-Z||а-яА-Я||\d]{2}$/
+
   # все методы, кроме private так или иначе используются извне класса, поэтому public
   # возвращаем скорость, количество вагонов 
   attr_reader :speed, :carriages, :current_station, :type, :name
@@ -12,11 +16,14 @@ class Train
   end
 
   # Инициализируем объект с номером, типом и количеством вагонов
-  def initialize(number)
+  def initialize(number, carriages_number)
     @name = number
-    @carriages=Array.new
+    @carriages = Array.new
+    @carriages_number = carriages_number
     @speed = 0
+    validate!
     @@trains.push(self)
+    @carriages_number.times { @type == 'Пассажирский' ? add_carriage(PassengerCarriage.new) :  add_carriage(CargoCarriage.new)}
     register_instance
   end
 
@@ -75,5 +82,10 @@ class Train
   # Используется только внутри класса
   def next_station
     @route.stations[@route.stations.index(@current_station) + 1] if current_station != @route.stations.last
+  end
+
+  def validate!
+    raise RuntimeError, "Номер поезда не соответствует шаблону.\nШаблон: Три символа, дефис, два символа\nПример: 'qwe-qw' или '123-12'" unless @name =~ TRAIN_NUMBER_PATTERN
+    raise RuntimeError, "Недопустимое количество вагонов" if @carriages_number < 1
   end
 end

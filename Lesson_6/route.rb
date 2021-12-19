@@ -1,5 +1,6 @@
 class Route
   include InstanceCounter
+  include CheckValidation
   # Все методы public - так как все вызываются извне
   
   attr_reader :stations
@@ -7,6 +8,7 @@ class Route
   # Создаем маршрут с первой станцией и конечной станцией
   def initialize(first_station, last_station)
     @stations=[first_station, last_station]
+    validate!
     register_instance
   end
 
@@ -27,5 +29,11 @@ class Route
     if @stations.include?(station) || @stations[0] != station || @stations[-1] != station
        @stations.delete(station)
     end
+  end
+
+  private
+
+  def validate!
+    raise RuntimeError, "Первая станция маршрута не может быть конечной" if @stations[0]==@stations[1]
   end
 end
