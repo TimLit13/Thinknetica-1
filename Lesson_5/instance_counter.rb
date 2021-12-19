@@ -8,13 +8,17 @@ module InstanceCounter
     
     # присвоить значение ноль таким образом не получится,
     # так как присваиваетсятолько при подключении (когда included)
-    # соответственно у потомков класса она не инициализируется.. 
+    # соответственно у потомков класса она не инициализируется (nil).. 
     # any_class.instances = 0  
   end
 
   module ClassMethods
     # доступ к переменной экземпляра класса на уровне класса
-    attr_accessor :instances
+    attr_writer :instances
+
+    def instances
+      @instances ||= 0
+    end
   end
 
   module InstanceMethods
@@ -23,8 +27,9 @@ module InstanceCounter
     protected
 
     def register_instance
-      self.class.instances = 0 if self.class.instances.nil?
+      # self.class.instances = 0 if self.class.instances.nil?
       self.class.instances += 1
+      
     end
   end
 end
