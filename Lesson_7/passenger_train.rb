@@ -1,5 +1,5 @@
 class PassengerTrain < Train
-  def initialize(number, carriages_number)
+  def initialize(number)
     super
     @type = 'Пассажирский'
   end

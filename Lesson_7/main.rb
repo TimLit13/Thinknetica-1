@@ -46,6 +46,10 @@ class AppController
         display_stations_list
       when 9
         display_trains_on_station
+      when 10
+        display_carriages_list
+      when 11
+        fill_carriage
       when 0
         break
       else
@@ -209,27 +213,42 @@ class AppController
   end
 
   def add_carriage
+    attempts = 0
     puts "Выберите поезд"
     display_trains_list(@trains)
-    user_train = gets.strip.to_i
+    user_train = gets.strip
+    begin
     if find_instance(@trains, user_train)
       train = find_instance(@trains, user_train)
       if train.type == 'Пассажирский' 
-        train.add_carriage(PassengerCarriage.new)
+        puts "Введите количество мест в вагоне"
+        train.add_carriage(PassengerCarriage.new(gets.to_i))
         puts "Добавлен пассажирский вагон"
       else
-        train.add_carriage(CargoCarriage.new)
+        puts "Введите общий объем вагона"
+        train.add_carriage(CargoCarriage.new(gets.to_i))
         puts "Добавлен грузовой вагон"
       end
     else
       puts "Указанный поезд #{user_train} не найден.\nПопробуйте снова."
+    end
+    rescue RuntimeError => exc
+      attempts += 1
+      puts "#{exc.message}"
+      if attempts < 3
+        puts "Не удалось добавить вагон. Попробуйте снова"
+        puts "Осталось попыток: #{3-attempts}"
+        retry
+      else
+        puts "Не удалось сдобавить вагон.\nВыход в меню." 
+      end
     end
   end
 
   def remove_carriage
     puts "Выберите поезд"
     display_trains_list(@trains)
-    user_train = gets.strip.to_i
+    user_train = gets.strip
     if find_instance(@trains, user_train)
       train = find_instance(@trains, user_train) 
       train.remove_carriage
@@ -297,11 +316,14 @@ class AppController
       puts "Выберите тип поезда"
       puts "1 - Пассажирский"
       puts "2 - Грузовой"
+      puts "3 - Любой"
       case gets.to_i
       when 1
         type = "Пассажирский"
       when 2
         type = "Грузовой"
+      when 3
+        display_all_trains_on_station(station)
       else
         puts "Выбран неправильный тип поезда."
       end
@@ -312,8 +334,73 @@ class AppController
     end
   end
 
+  def display_all_trains_on_station(station)
+    my_proc = Proc.new do |train|  
+      print "Поезд № #{train.name}\t"
+      print "тип: #{train.type}\t"
+      puts "количество вагонов: #{train.carriages.any? ? train.carriages.length : 0}"
+      return
+    end
+    station.all_trains_on_station(&my_proc) if station.trains_on_station.any?
+    puts "поезда на станции отсутствуют" unless station.trains_on_station.any?
+  end
+
   def user_choice_mistake(user_choice)
     puts "Программа не распознала команду #{user_choice}."
+  end
+
+  def display_carriages_list
+    puts "Выберите поезд"
+    display_trains_list(@trains)
+    user_train = gets.strip
+    if find_instance(@trains, user_train)
+      train = find_instance(@trains, user_train)
+      if train.carriages.length > 0
+        l = lambda do |carriage, index|  
+          print "Вагон № #{index + 1}\t"
+          print "#{carriage.type}\t"
+          if carriage.type == "Пассажирский"
+            print "Занято мест: #{carriage.passengers_number}\t"
+            puts "Свободно мест: #{carriage.free_seats}\t"
+          else
+            print "Занято объема: #{carriage.filled_volume.round(2)}\t"
+            puts"Свободно объема: #{carriage.available_volume.round(2)}\t"
+          end
+        end
+        train.all_carriages_in_train(&l)
+      else
+        puts "К поезду пока что вагоны не прицеплены."
+      end
+    else 
+      puts "Указанный поезд не найден"
+    end
+  end
+
+  def fill_carriage
+    puts "Выберите поезд"
+    display_trains_list(@trains)
+    user_train = gets.strip
+    if find_instance(@trains, user_train)
+      train = find_instance(@trains, user_train)
+      puts "Введите номер вагона"
+      user_сarriage = gets.to_i
+      if train.carriages.any? && train.carriages[user_сarriage - 1]
+        puts 
+        if train.type == "Пассажирский"
+          train.carriages[user_сarriage - 1].add_passenger
+        else
+          puts "Введите объем груза"
+          user_fill_volume = gets.to_f
+          train.carriages[user_сarriage - 1].fill_volume(user_fill_volume) if user_fill_volume > 0
+          puts "Не правильный объем груза" unless user_fill_volume > 0
+        end
+      else
+        puts "Такой вагон отсутствует" unless train.carriages[user_train - 1]
+        puts "В поезде отсутствуют вагоны" unless train.carriages.any?
+      end
+    else
+      puts "Указанный поезд не найден"
+    end
   end
 
   def display_menu
@@ -328,6 +415,8 @@ class AppController
     puts "7 - Переместить поезд"
     puts "8 - Посмотреть список станций"
     puts "9 - Посмотреть список поездов на станции"
+    puts "10 - Посмотреть список вагонов поезда"
+    puts "11 - Заполнить вагон"
     puts "0 - Выход"
     puts '=' * 40
   end

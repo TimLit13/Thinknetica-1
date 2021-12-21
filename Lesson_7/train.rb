@@ -15,15 +15,13 @@ class Train
     @@trains.find { |train| train.name == number}
   end
 
-  # Инициализируем объект с номером, типом и количеством вагонов
-  def initialize(number, carriages_number)
+  def initialize(number)
     @name = number
     @carriages = Array.new
-    @carriages_number = carriages_number
+    @carriages_number = 0
     @speed = 0
     validate!
     @@trains.push(self)
-    @carriages_number.times { @type == 'Пассажирский' ? add_carriage(PassengerCarriage.new) :  add_carriage(CargoCarriage.new)}
     register_instance
   end
 
@@ -68,6 +66,11 @@ class Train
     next_station.train_departure(self)
   end
 
+  # block можно опустить
+  def all_carriages_in_train(&block)
+    @carriages.each_with_index { |carriage, index| yield(carriage, index) } if block_given?
+  end
+  
   private
 
   # Возвращает предыдущую станцию. Если поезд на 1 станции, то возвращает nil
@@ -86,6 +89,6 @@ class Train
 
   def validate!
     raise RuntimeError, "Номер поезда не соответствует шаблону.\nШаблон: Три символа, дефис, два символа\nПример: 'qwe-qw' или '123-12'" unless @name =~ TRAIN_NUMBER_PATTERN
-    raise RuntimeError, "Недопустимое количество вагонов" if @carriages_number < 1
+    raise RuntimeError, "Недопустимое количество вагонов" if @carriages_number < 0
   end
 end

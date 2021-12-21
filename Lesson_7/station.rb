@@ -42,6 +42,11 @@ class Station
     @trains_on_station.select { |train| train.type == type}
   end
 
+  # &block можно опустить
+  def all_trains_on_station(&block)
+    @trains_on_station.each { |train| yield(train) } if block_given? && @trains_on_station.any?
+  end
+
   private
 
   def validate!

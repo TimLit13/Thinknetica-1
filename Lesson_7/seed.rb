@@ -18,17 +18,17 @@ module Seed
     @routes.push(route_2)
     route_2.add_station(station_2)
 
-    train_1 = PassengerTrain.new("111-11", 11)
-    train_2 = CargoTrain.new("222-22", 50)
+    train_1 = PassengerTrain.new("111-11")
+    train_2 = CargoTrain.new("222-22")
     @trains.push(train_1)
     @trains.push(train_2)
 
     5.times do 
-      passenger_cargo = PassengerCarriage.new
-      carriage_cargo = CargoCarriage.new
-      
-      train_1.add_carriage(passenger_cargo)
-      train_2.add_carriage(carriage_cargo)
+      train_1.add_carriage(PassengerCarriage.new(rand(36..54)))
+    end
+
+    50.times do
+      train_2.add_carriage(CargoCarriage.new(rand(75.0..158.0)))
     end
 
     train_1.set_route(route_1)
