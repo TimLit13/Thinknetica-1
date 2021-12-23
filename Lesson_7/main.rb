@@ -226,7 +226,7 @@ class AppController
         puts "Добавлен пассажирский вагон"
       else
         puts "Введите общий объем вагона"
-        train.add_carriage(CargoCarriage.new(gets.to_i))
+        train.add_carriage(CargoCarriage.new(gets.to_f))
         puts "Добавлен грузовой вагон"
       end
     else

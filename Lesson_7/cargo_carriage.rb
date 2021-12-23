@@ -3,14 +3,14 @@ class CargoCarriage < Carriage
   attr_reader :filled_volume
 
   def initialize(max_cargo_volume)
-    @max_cargo_volume = max_cargo_volume.to_f
+    @max_cargo_volume = max_cargo_volume
     @filled_volume = 0.0
     @type = 'Грузовой'
-    validate!
+    super
   end
 
   def fill_volume(volume)
-    ((@filled_volume + volume) < @max_cargo_volume) ? @filled_volume += volume : (puts "Слишком большой объем груза")
+    @filled_volume += volume if ( (@filled_volume + volume) < @max_cargo_volume )
   end
 
   def available_volume

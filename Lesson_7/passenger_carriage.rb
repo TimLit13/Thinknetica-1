@@ -6,11 +6,11 @@ class PassengerCarriage < Carriage
     @max_passenger_seats = max_passenger_seats
     @passengers_number = 0
     @type = 'Пассажирский'
-    validate!
+    super
   end
 
   def add_passenger
-    (@passengers_number+1) < @max_passenger_seats ? @passengers_number += 1 : (puts "Все места уже заняты") 
+    @passengers_number += 1 if @passengers_number < @max_passenger_seats 
   end
 
   def free_seats
