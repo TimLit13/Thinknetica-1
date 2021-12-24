@@ -97,7 +97,7 @@ class AppController
       end
     end
     if attempts < 3
-      puts "#{user_train_type} поезд ##{user_train_name} с количеством вагонов: #{user_carriages_number} успешно создан"
+      puts "#{user_train_type} поезд ##{user_train_name} успешно создан"
     end
   end
 
