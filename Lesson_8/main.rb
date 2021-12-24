@@ -35,7 +35,7 @@ class AppController
       when 3
         create_or_change_route
       when 4
-        set_route
+        make_route
       when 5
         add_carriage
       when 6
@@ -77,13 +77,11 @@ class AppController
       user_train_type = gets.strip
       puts 'Введите номер поезда:'
       user_train_name = gets.strip
-      puts 'Укажите количество вагонов'
-      user_carriages_number = gets.strip.to_i
 
       if user_train_type == 'Пассажирский'
-        @trains.push(PassengerTrain.new(user_train_name, user_carriages_number))
+        @trains.push(PassengerTrain.new(user_train_name))
       elsif user_train_type == 'Грузовой'
-        @trains.push(CargoTrain.new(user_train_name, user_carriages_number))
+        @trains.push(CargoTrain.new(user_train_name))
       else
         raise 'Введен неправильный тип поезда'
       end
@@ -195,7 +193,7 @@ class AppController
     end
   end
 
-  def set_route
+  def make_route
     display_trains_list(@trains)
     puts 'Введите номер поезда для добавления маршрута'
     user_train = gets.to_i
@@ -209,7 +207,7 @@ class AppController
       user_route = gets.to_i
 
       if @routes[user_route - 1]
-        train.set_route(@routes[user_route - 1])
+        train.make_route(@routes[user_route - 1])
         @routes[user_route - 1].stations.first.train_arrive(train)
       else
         puts 'Введен неправильный маршрут'
@@ -332,9 +330,7 @@ class AppController
         puts 'Выбран неправильный тип поезда.'
       end
       puts "Поезда на станции #{station.name}:"
-      if station.trains_by_type(type).any?
-        display_trains_list(station.trains_by_type(type))
-      end
+      display_trains_list(station.trains_by_type(type)) if station.trains_by_type(type).any?
     else
       puts "Станция #{user_station} не найдена."
     end
@@ -397,9 +393,7 @@ class AppController
         else
           puts 'Введите объем груза'
           user_fill_volume = gets.to_f
-          if user_fill_volume > 0
-            train.carriages[user_сarriage - 1].fill_volume(user_fill_volume)
-          end
+          train.carriages[user_сarriage - 1].fill_volume(user_fill_volume) if user_fill_volume > 0
           puts 'Не правильный объем груза' unless user_fill_volume > 0
         end
       else
