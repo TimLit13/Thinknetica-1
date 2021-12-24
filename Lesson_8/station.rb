@@ -5,6 +5,7 @@ class Station
 
   # возвращает список поездов на станции, Наименование станции
   attr_reader :trains_on_station, :name
+
   @station_instances = 0
 
   class << self
@@ -39,18 +40,17 @@ class Station
 
   # Возвращает список поездов на станции по заданному типу
   def trains_by_type(type)
-    @trains_on_station.select { |train| train.type == type}
+    @trains_on_station.select { |train| train.type == type }
   end
 
   # &block можно опустить
-  def all_trains_on_station(&block)
-    @trains_on_station.each { |train| yield(train) } if block_given? && @trains_on_station.any?
+  def all_trains_on_station
+    @trains_on_station.each(&block) if block_given? && @trains_on_station.any?
   end
 
   private
 
   def validate!
-    raise RuntimeError, "В названии станции должно быть не менее трех символов" if @name.length < 3
+    raise 'В названии станции должно быть не менее трех символов' if @name.length < 3
   end
-
 end

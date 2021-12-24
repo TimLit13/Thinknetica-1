@@ -18,12 +18,12 @@ module Seed
     @routes.push(route_2)
     route_2.add_station(station_2)
 
-    train_1 = PassengerTrain.new("111-11")
-    train_2 = CargoTrain.new("222-22")
+    train_1 = PassengerTrain.new('111-11')
+    train_2 = CargoTrain.new('222-22')
     @trains.push(train_1)
     @trains.push(train_2)
 
-    5.times do 
+    5.times do
       train_1.add_carriage(PassengerCarriage.new(rand(36..54)))
     end
 

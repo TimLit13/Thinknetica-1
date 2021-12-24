@@ -6,18 +6,18 @@ class Train
   TRAIN_NUMBER_PATTERN = /^[a-zA-Z||а-яА-Я||\d]{3}-?[a-zA-Z||а-яА-Я||\d]{2}$/
 
   # все методы, кроме private так или иначе используются извне класса, поэтому public
-  # возвращаем скорость, количество вагонов 
+  # возвращаем скорость, количество вагонов
   attr_reader :speed, :carriages, :current_station, :type, :name
 
   @@trains = []
 
   def self.find(number)
-    @@trains.find { |train| train.name == number}
+    @@trains.find { |train| train.name == number }
   end
 
   def initialize(number)
     @name = number
-    @carriages = Array.new
+    @carriages = []
     @carriages_number = 0
     @speed = 0
     validate!
@@ -37,7 +37,7 @@ class Train
 
   # Прицепить вагон
   def add_carriage(carriage)
-    @carriages.push(carriage) if @speed.zero? && self.type == carriage.type
+    @carriages.push(carriage) if @speed.zero? && type == carriage.type
   end
 
   # Отцепить вагон
@@ -67,10 +67,10 @@ class Train
   end
 
   # block можно опустить
-  def all_carriages_in_train(&block)
-    @carriages.each_with_index { |carriage, index| yield(carriage, index) } if block_given?
+  def all_carriages_in_train
+    @carriages.each_with_index(&block) if block_given?
   end
-  
+
   private
 
   # Возвращает предыдущую станцию. Если поезд на 1 станции, то возвращает nil
@@ -88,7 +88,9 @@ class Train
   end
 
   def validate!
-    raise RuntimeError, "Номер поезда не соответствует шаблону.\nШаблон: Три символа, дефис, два символа\nПример: 'qwe-qw' или '123-12'" unless @name =~ TRAIN_NUMBER_PATTERN
-    raise RuntimeError, "Недопустимое количество вагонов" if @carriages_number < 0
+    unless @name =~ TRAIN_NUMBER_PATTERN
+      raise "Номер поезда не соответствует шаблону.\nШаблон: Три символа, дефис, два символа\nПример: 'qwe-qw' или '123-12'"
+    end
+    raise 'Недопустимое количество вагонов' if @carriages_number < 0
   end
 end

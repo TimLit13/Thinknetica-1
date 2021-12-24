@@ -1,5 +1,4 @@
 class PassengerCarriage < Carriage
-
   attr_reader :passengers_number
 
   def initialize(max_passenger_seats)
@@ -10,7 +9,7 @@ class PassengerCarriage < Carriage
   end
 
   def add_passenger
-    @passengers_number += 1 if @passengers_number < @max_passenger_seats 
+    @passengers_number += 1 if @passengers_number < @max_passenger_seats
   end
 
   def free_seats
@@ -22,6 +21,6 @@ class PassengerCarriage < Carriage
   attr_reader :max_passenger_seats
 
   def validate!
-    raise RuntimeError, "Введено недопустимое количество пассажиров" unless @max_passenger_seats.between?(0, 54)
+    raise 'Введено недопустимое количество пассажиров' unless @max_passenger_seats.between?(0, 54)
   end
 end

@@ -5,11 +5,11 @@ module InstanceCounter
     any_class.include InstanceMethods
     # переменная экземпляра класса на уровне класса
     # инициализируется при подмешивании модуля в класс
-    
+
     # присвоить значение ноль таким образом не получится,
     # так как присваиваетсятолько при подключении (когда included)
-    # соответственно у потомков класса она не инициализируется (nil).. 
-    # any_class.instances = 0  
+    # соответственно у потомков класса она не инициализируется (nil)..
+    # any_class.instances = 0
   end
 
   module ClassMethods
@@ -24,12 +24,12 @@ module InstanceCounter
   module InstanceMethods
     # protected так как у класса в который подкючается модуль
     # могут быть наследники
+
     protected
 
     def register_instance
       # self.class.instances = 0 if self.class.instances.nil?
       self.class.instances += 1
-      
     end
   end
 end

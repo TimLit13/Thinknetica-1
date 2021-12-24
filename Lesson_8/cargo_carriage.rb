@@ -1,5 +1,4 @@
 class CargoCarriage < Carriage
-
   attr_reader :filled_volume
 
   def initialize(max_cargo_volume)
@@ -10,7 +9,7 @@ class CargoCarriage < Carriage
   end
 
   def fill_volume(volume)
-    @filled_volume += volume if ( (@filled_volume + volume) < @max_cargo_volume )
+    @filled_volume += volume if (@filled_volume + volume) < @max_cargo_volume
   end
 
   def available_volume
@@ -22,6 +21,6 @@ class CargoCarriage < Carriage
   attr_reader :max_cargo_volume
 
   def validate!
-    raise RuntimeError, "Введен недопустимый объем вагона" unless @max_cargo_volume.between?(0.0,160.0)
+    raise 'Введен недопустимый объем вагона' unless @max_cargo_volume.between?(0.0, 160.0)
   end
 end

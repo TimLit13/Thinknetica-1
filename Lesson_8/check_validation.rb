@@ -1,5 +1,4 @@
 module CheckValidation
-
   def valid?
     validate!
     true

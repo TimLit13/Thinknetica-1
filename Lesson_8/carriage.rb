@@ -3,8 +3,7 @@ class Carriage
 
   attr_reader :type
 
-  def initialize(max)
+  def initialize(_max)
     validate!
   end
-
 end
