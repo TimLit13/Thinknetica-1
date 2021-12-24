@@ -21,6 +21,8 @@ class PassengerCarriage < Carriage
   attr_reader :max_passenger_seats
 
   def validate!
-    raise 'Введено недопустимое количество пассажиров' unless @max_passenger_seats.between?(0, 54)
+    raise 'Введено недопустимое количество пассажиров' unless @max_passenger_seats.between?(
+      0, 54
+    )
   end
 end

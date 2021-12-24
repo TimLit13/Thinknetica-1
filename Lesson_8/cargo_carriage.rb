@@ -21,6 +21,8 @@ class CargoCarriage < Carriage
   attr_reader :max_cargo_volume
 
   def validate!
-    raise 'Введен недопустимый объем вагона' unless @max_cargo_volume.between?(0.0, 160.0)
+    raise 'Введен недопустимый объем вагона' unless @max_cargo_volume.between?(
+      0.0, 160.0
+    )
   end
 end

@@ -77,14 +77,18 @@ class Train
   # Независимо от класса потомка, реализация метода не изменится.
   # Используется только внутри класса
   def previous_station
-    @route.stations[@route.stations.index(@current_station) - 1] if @current_station != @route.stations.first
+    if @current_station != @route.stations.first
+      @route.stations[@route.stations.index(@current_station) - 1]
+    end
   end
 
   # Возвращает слудующую станцию. Если поезд на последней станции, то возвращает nil
   # Независимо от класса потомка, реализация метода не изменится.
   # Используется только внутри класса
   def next_station
-    @route.stations[@route.stations.index(@current_station) + 1] if current_station != @route.stations.last
+    if current_station != @route.stations.last
+      @route.stations[@route.stations.index(@current_station) + 1]
+    end
   end
 
   def validate!

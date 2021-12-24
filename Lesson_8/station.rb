@@ -51,6 +51,8 @@ class Station
   private
 
   def validate!
-    raise 'В названии станции должно быть не менее трех символов' if @name.length < 3
+    if @name.length < 3
+      raise 'В названии станции должно быть не менее трех символов'
+    end
   end
 end

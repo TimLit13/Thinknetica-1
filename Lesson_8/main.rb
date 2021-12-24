@@ -135,7 +135,9 @@ class AppController
     puts 'Введите название последней станции'
     user_route_last_station = gets.strip.capitalize
 
-    if find_instance(@stations, user_route_first_station) && find_instance(@stations, user_route_last_station)
+    if find_instance(@stations,
+                     user_route_first_station) && find_instance(@stations,
+                                                                user_route_last_station)
       @routes.push(Route.new(find_instance(@stations, user_route_first_station),
                              find_instance(@stations, user_route_last_station)))
       puts 'Маршрут добавлен'
@@ -183,7 +185,8 @@ class AppController
         puts 'Введите название станции'
         user_station = gets.strip.capitalize
 
-        @routes[user_route - 1].remove_station(find_instance(@stations, user_station))
+        @routes[user_route - 1].remove_station(find_instance(@stations,
+                                                             user_station))
       else
         puts 'Такого маршрута нет'
       end
@@ -196,7 +199,8 @@ class AppController
     display_trains_list(@trains)
     puts 'Введите номер поезда для добавления маршрута'
     user_train = gets.to_i
-    train = find_instance(@trains, user_train) if find_instance(@trains, user_train)
+    train = find_instance(@trains, user_train) if find_instance(@trains,
+                                                                user_train)
     if train.nil?
       puts 'Такой поезд отсутствует'
     else
@@ -328,7 +332,9 @@ class AppController
         puts 'Выбран неправильный тип поезда.'
       end
       puts "Поезда на станции #{station.name}:"
-      display_trains_list(station.trains_by_type(type)) if station.trains_by_type(type).any?
+      if station.trains_by_type(type).any?
+        display_trains_list(station.trains_by_type(type))
+      end
     else
       puts "Станция #{user_station} не найдена."
     end
@@ -391,7 +397,9 @@ class AppController
         else
           puts 'Введите объем груза'
           user_fill_volume = gets.to_f
-          train.carriages[user_сarriage - 1].fill_volume(user_fill_volume) if user_fill_volume > 0
+          if user_fill_volume > 0
+            train.carriages[user_сarriage - 1].fill_volume(user_fill_volume)
+          end
           puts 'Не правильный объем груза' unless user_fill_volume > 0
         end
       else
