@@ -1,5 +1,4 @@
 module MainInterfaceHelper
-
   private
 
   def display_menu
@@ -19,7 +18,7 @@ module MainInterfaceHelper
     puts '0 - Выход'
     puts '=' * 40
   end
-  
+
   def user_choice_mistake(user_choice)
     puts "Программа не распознала команду #{user_choice}."
   end

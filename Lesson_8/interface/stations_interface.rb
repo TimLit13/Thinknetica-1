@@ -1,7 +1,7 @@
 class StationsInterface
   include FindInstance
 
-  attr_accessor:stations
+  attr_accessor :stations
 
   def initialize
     @stations = []
@@ -53,7 +53,7 @@ class StationsInterface
   end
 
   private
-  
+
   def display_all_trains_on_station(station)
     my_proc = proc do |train|
       print "Поезд № #{train.name}\t"
@@ -64,5 +64,4 @@ class StationsInterface
     station.all_trains_on_station(&my_proc) if station.trains_on_station.any?
     puts 'поезда на станции отсутствуют' unless station.trains_on_station.any?
   end
-
 end

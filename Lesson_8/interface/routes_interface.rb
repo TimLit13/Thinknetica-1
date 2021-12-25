@@ -1,7 +1,7 @@
 class RoutesInterface
   include FindInstance
 
-  attr_accessor:routes
+  attr_accessor :routes
 
   def initialize
     @routes = []
@@ -34,7 +34,7 @@ class RoutesInterface
   end
 
   def update(stations_interface)
-     if @routes.any?
+    if @routes.any?
       index
       puts 'Выберите маршрут'
       user_route = gets.strip.to_i
@@ -81,5 +81,4 @@ class RoutesInterface
       'В программе еще отсутствуют маршруты.'
     end
   end
-
 end

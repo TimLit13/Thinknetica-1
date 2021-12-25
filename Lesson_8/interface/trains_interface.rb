@@ -1,6 +1,6 @@
 class TrainsInterface
   include FindInstance
-  
+
   attr_accessor :trains
 
   def initialize
@@ -140,7 +140,7 @@ class TrainsInterface
     if find_instance(@trains, user_train)
       train = find_instance(@trains, user_train)
       if train.carriages.any?
-        l = -> (carriage, index) do
+        l = lambda do |carriage, index|
           print "Вагон № #{index + 1}\t"
           print "#{carriage.type}\t"
           if carriage.type == 'Пассажирский'
@@ -186,5 +186,4 @@ class TrainsInterface
       puts 'Указанный поезд не найден'
     end
   end
-
 end

@@ -9,3 +9,35 @@ Style/ExplicitBlockArgument:
 
 Metrics/LineLength:
   Max: 120
+
+Metrics/BlockNesting:
+  Exclude:
+    - 'interface/*'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'interface/*'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'interface/*'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'interface/*'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'interface/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'interface/main_interface.rb'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'interface/*'
+
+Style/ClassVars:
+  Exclude:
+    - 'train.rb'

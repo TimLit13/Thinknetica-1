@@ -1,7 +1,6 @@
-require_relative './required_files.rb'
+require_relative './required_files'
 
 class AppController
-
   def initialize
     @interface = MainInterface.new
   end
