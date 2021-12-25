@@ -4,5 +4,8 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/ExplicitBlockArgument:
+  Enabled: false
+
 Metrics/LineLength:
-  Max: 80
+  Max: 120

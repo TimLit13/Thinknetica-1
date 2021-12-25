@@ -26,16 +26,12 @@ class Route
 
   # Удалить станцию из маршрута, если такая станция есть в маршруте
   def remove_station(station)
-    if @stations.include?(station) || @stations[0] != station || @stations[-1] != station
-      @stations.delete(station)
-    end
+    @stations.delete(station) if @stations.include?(station) || @stations[0] != station || @stations[-1] != station
   end
 
   private
 
   def validate!
-    if @stations[0] == @stations[1]
-      raise 'Первая станция маршрута не может быть конечной'
-    end
+    raise 'Первая станция маршрута не может быть конечной' if @stations[0] == @stations[1]
   end
 end

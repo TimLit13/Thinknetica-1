@@ -3,12 +3,13 @@ class Train
   include InstanceCounter
   include CheckValidation
 
-  TRAIN_NUMBER_PATTERN = /^[a-zA-Z||а-яА-Я||\d]{3}-?[a-zA-Z||а-яА-Я||\d]{2}$/
+  TRAIN_NUMBER_PATTERN = /^[a-zA-Z||а-яА-Я||\d]{3}-?[a-zA-Z||а-яА-Я||\d]{2}$/.freeze
 
   # все методы, кроме private так или иначе используются извне класса, поэтому public
   # возвращаем скорость, количество вагонов
   attr_reader :speed, :carriages, :current_station, :type, :name
 
+  # тот случай, когда нужна именно переменная класса, чтобы наследовалась
   @@trains = []
 
   def self.find(number)
@@ -46,7 +47,7 @@ class Train
   end
 
   # Задать маршрут (@route - объект класса route) и передвинуть на 1 станцию маршрута
-  def set_route(route)
+  def make_route(route)
     @route = route
     @current_station = @route.stations.first
     @current_station.train_arrive(self)
@@ -68,7 +69,7 @@ class Train
 
   # block можно опустить
   def all_carriages_in_train
-    @carriages.each_with_index(&block) if block_given?
+    @carriages.each_with_index { |carriage, index| yield(carriage, index) } if block_given?
   end
 
   private
@@ -77,24 +78,21 @@ class Train
   # Независимо от класса потомка, реализация метода не изменится.
   # Используется только внутри класса
   def previous_station
-    if @current_station != @route.stations.first
-      @route.stations[@route.stations.index(@current_station) - 1]
-    end
+    @route.stations[@route.stations.index(@current_station) - 1] if @current_station != @route.stations.first
   end
 
   # Возвращает слудующую станцию. Если поезд на последней станции, то возвращает nil
   # Независимо от класса потомка, реализация метода не изменится.
   # Используется только внутри класса
   def next_station
-    if current_station != @route.stations.last
-      @route.stations[@route.stations.index(@current_station) + 1]
-    end
+    @route.stations[@route.stations.index(@current_station) + 1] if current_station != @route.stations.last
   end
 
   def validate!
     unless @name =~ TRAIN_NUMBER_PATTERN
-      raise "Номер поезда не соответствует шаблону.\nШаблон: Три символа, дефис, два символа\nПример: 'qwe-qw' или '123-12'"
+      raise "Номер поезда не соответствует шаблону.\n \
+      Шаблон: Три символа, дефис, два символа\nПример: 'qwe-qw' или '123-12'"
     end
-    raise 'Недопустимое количество вагонов' if @carriages_number < 0
+    raise 'Недопустимое количество вагонов' if @carriages_number.negative?
   end
 end
