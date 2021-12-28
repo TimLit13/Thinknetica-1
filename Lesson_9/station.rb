@@ -1,10 +1,17 @@
 class Station
   include InstanceCounter
   include CheckValidation
+  include Validation
+  include Accessors
   # Все методы public - так как все вызываются извне
+
+  NAME_PATTERN = /^\w{3,}$/.freeze
 
   # возвращает список поездов на станции, Наименование станции
   attr_reader :trains_on_station, :name
+
+  validate :name, :format, NAME_PATTERN
+  # validate :name, :type, String
 
   @station_instances = 0
 
@@ -50,7 +57,7 @@ class Station
 
   private
 
-  def validate!
-    raise 'В названии станции должно быть не менее трех символов' if @name.length < 3
-  end
+  # def validate!
+  #   raise 'В названии станции должно быть не менее трех символов' if @name.length < 3
+  # end
 end

@@ -1,4 +1,9 @@
 module Accessors
+  def self.included(any_class)
+    any_class.extend ClassMethods
+    any_class.include InstanceMethods
+  end
+
   module ClassMethods
     def attr_accessor_with_history(*names)
       names.each do |name|
@@ -28,5 +33,8 @@ module Accessors
         end
       end
     end
+  end
+
+  module InstanceMethods
   end
 end

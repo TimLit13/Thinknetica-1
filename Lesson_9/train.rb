@@ -2,12 +2,18 @@ class Train
   include Company
   include InstanceCounter
   include CheckValidation
+  include Validation
+  include Accessors
 
   TRAIN_NUMBER_PATTERN = /^[a-zA-Z||а-яА-Я||\d]{3}-?[a-zA-Z||а-яА-Я||\d]{2}$/.freeze
 
   # все методы, кроме private так или иначе используются извне класса, поэтому public
   # возвращаем скорость, количество вагонов
   attr_reader :speed, :carriages, :current_station, :type, :name
+
+  # Так не работает. вопрос почему..(в station все работате)
+  # validate :name, :format, TRAIN_NUMBER_PATTERN
+  # validate :name, :presence
 
   # тот случай, когда нужна именно переменная класса, чтобы наследовалась
   @@trains = []
@@ -18,6 +24,8 @@ class Train
 
   def initialize(number)
     @name = number
+    self.class.validate :name, :format, TRAIN_NUMBER_PATTERN
+    self.class.validate :name, :presence
     @carriages = []
     @carriages_number = 0
     @speed = 0
@@ -88,11 +96,11 @@ class Train
     @route.stations[@route.stations.index(@current_station) + 1] if current_station != @route.stations.last
   end
 
-  def validate!
-    unless @name =~ TRAIN_NUMBER_PATTERN
-      raise "Номер поезда не соответствует шаблону.\n \
-      Шаблон: Три символа, дефис, два символа\nПример: 'qwe-qw' или '123-12'"
-    end
-    raise 'Недопустимое количество вагонов' if @carriages_number.negative?
-  end
+  # def validate!
+  #   unless @name =~ TRAIN_NUMBER_PATTERN
+  #     raise "Номер поезда не соответствует шаблону.\n \
+  #     Шаблон: Три символа, дефис, два символа\nПример: 'qwe-qw' или '123-12'"
+  #   end
+  #   raise 'Недопустимое количество вагонов' if @carriages_number.negative?
+  # end
 end
