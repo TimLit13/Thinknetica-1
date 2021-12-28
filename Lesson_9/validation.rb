@@ -40,9 +40,9 @@ module Validation
     end
 
     def validate_format(attr_name, format)
-    #   puts "validate_format"
-    #   puts attr_name
-    #   puts format
+      # puts "validate_format"
+      # puts attr_name
+      # puts format
       raise ArgumentError, 'Format validation fault' if attr_name !~ Regexp.new(format)
     end
 

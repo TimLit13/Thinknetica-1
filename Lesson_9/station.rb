@@ -55,7 +55,7 @@ class Station
     @trains_on_station.each { |train| yield(train) } if block_given? && @trains_on_station.any?
   end
 
-  private
+  # private
 
   # def validate!
   #   raise 'В названии станции должно быть не менее трех символов' if @name.length < 3
